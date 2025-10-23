@@ -1,12 +1,18 @@
 'use strict';
 
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch(err => console.error("❌ MongoDB connection error:", err));
+
+console.log("MONGO_URI =", process.env.MONGO_URI);
 
 module.exports = function (app) {
-  
-  //DB Connection & Schema layout 
-  mongoose.connect(process.env.DB,{useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true})
-  const issueModel = require('../models/issue')
+  const issueModel = require('../models/issue');
 
   //Routes
   app.route('/api/issues/:project')
