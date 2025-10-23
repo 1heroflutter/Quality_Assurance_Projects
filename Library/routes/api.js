@@ -12,7 +12,7 @@ const mongoose = require('mongoose')
 
 module.exports = function (app) {
 
- mongoose.connect(process.env.DB, {useNewUrlParser: true, useUnifiedTopology: true})
+ mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
   const libraryModel = require('../models/lib')
 
   app.route('/api/books')
