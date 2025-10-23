@@ -3,37 +3,35 @@
 const ConvertHandler = require('../controllers/convertHandler.js');
 
 module.exports = function (app) {
+  
+  let convertHandler = new ConvertHandler();
 
-  const convertHandler = new ConvertHandler();
-
-  app.get('/api/convert', (req, res) => {
+  app.route('/api/convert').get(function (req, res) {
     let input = req.query.input;
-
     let initNum = convertHandler.getNum(input);
     let initUnit = convertHandler.getUnit(input);
 
-    // Trường hợp cả hai đều sai
+    // 1. Cả số và đơn vị đều sai
     if (initNum === 'invalid number' && initUnit === 'invalid unit') {
       return res.send('invalid number and unit');
     }
 
-    // Trường hợp sai số
+    // 2. Sai số
     if (initNum === 'invalid number') {
       return res.send('invalid number');
     }
 
-    // Trường hợp sai đơn vị
+    // 3. Sai đơn vị
     if (initUnit === 'invalid unit') {
       return res.send('invalid unit');
     }
 
-    // Nếu hợp lệ, tiếp tục chuyển đổi
-    const returnNum = convertHandler.convert(initNum, initUnit);
-    const returnUnit = convertHandler.getReturnUnit(initUnit);
+    // 4. Hợp lệ → thực hiện chuyển đổi
+    let returnNum = convertHandler.convert(initNum, initUnit);
+    let returnUnit = convertHandler.getReturnUnit(initUnit);
+    let string = convertHandler.getString(initNum, initUnit, returnNum, returnUnit);
 
-    const string = convertHandler.getString(initNum, initUnit, returnNum, returnUnit);
-
-    // Trả về JSON đúng format FCC yêu cầu
+    // ⚠️ FCC yêu cầu trả về JSON với 5 trường
     res.json({
       initNum,
       initUnit,
