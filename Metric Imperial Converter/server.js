@@ -4,7 +4,7 @@ const express     = require('express');
 const bodyParser  = require('body-parser');
 const expect      = require('chai').expect;
 const cors        = require('cors');
-require('dotenv').config();
+require('dotenv').config({path: __dirname + '/sample.env'});
 
 const apiRoutes         = require('./routes/api.js');
 const fccTestingRoutes  = require('./routes/fcctesting.js');
@@ -53,7 +53,7 @@ app.listen(port, function () {
           console.log('Tests are not valid:');
           console.log(error);
       }
-    }, 3500);
+    }, 1500);
   }
 });
 
